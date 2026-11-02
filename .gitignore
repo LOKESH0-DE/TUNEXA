@@ -1,0 +1,6 @@
+﻿node_modules/
+dist/
+.env
+.env.*
+!.env.example
+songs/HoliznaCC0 - Final Level.mp3

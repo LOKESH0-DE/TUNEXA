@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TUNEXA - AI Song Studio</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: #100d1c;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    padding: 22px;
+    text-align: center;
+    background: linear-gradient(120deg,#28104d,#7419a8);
+}
+
+.logo {
+    font-size: 34px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    color: #e6b8ff;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 16px;
+    background: #1b1629;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    background: #38234f;
+    padding: 10px 17px;
+    border-radius: 22px;
+}
+
+main {
+    width: 92%;
+    max-width: 800px;
+    margin: 25px auto;
+}
+
+.panel {
+    background: #211a31;
+    border: 1px solid #493064;
+    padding: 22px;
+    border-radius: 15px;
+}
+
+h2 { color: #d9a5ff; }
+
+label {
+    display: block;
+    margin-top: 17px;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+textarea, select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #67468b;
+    border-radius: 9px;
+    background: #100d1c;
+    color: white;
+    font-size: 15px;
+}
+
+textarea {
+    min-height: 220px;
+    resize: vertical;
+}
+
+.effect {
+    margin-top: 20px;
+}
+
+input[type="range"] {
+    width: 100%;
+    accent-color: #c15bff;
+}
+
+button {
+    margin-top: 22px;
+    padding: 14px 22px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(90deg,#8b35d1,#d13cbb);
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.note {
+    color: #bdb0ce;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+#message {
+    margin-top: 18px;
+    color: #e6b8ff;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">TUNEXA</div>
+    <p>AI Song Creation Studio</p>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="music.html">Music</a>
+    <a href="studio.html">AI Song Studio</a>
+</nav>
+
+<main>
+<div class="panel">
+
+    <h2>🎙️ Create Your Own Song</h2>
+    <p>Paste your lyrics and choose how you want your song to sound.</p>
+
+    <label for="lyrics">Your Song Lyrics</label>
+    <textarea id="lyrics" placeholder="Paste your own lyrics here..."></textarea>
+
+    <label for="language">Song Language</label>
+    <select id="language">
+        <option>Telugu</option>
+        <option>Hindi</option>
+        <option>Tamil</option>
+        <option>Malayalam</option>
+        <option>Kannada</option>
+        <option>English</option>
+    </select>
+
+    <label for="voice">Singing Voice</label>
+    <select id="voice">
+        <option>Male Voice</option>
+        <option>Female Voice</option>
+    </select>
+
+    <label for="style">Music Style</label>
+    <select id="style">
+        <option>Melody</option>
+        <option>Romantic</option>
+        <option>Folk</option>
+        <option>Mass</option>
+        <option>Devotional</option>
+        <option>Pop</option>
+        <option>DJ</option>
+        <option>Sad</option>
+        <option>Classical</option>
+        <option>Hip Hop</option>
+        <option>Rock</option>
+    </select>
+
+    <label for="duration">Song Duration</label>
+    <select id="duration">
+        <option value="3">3 Minutes</option>
+        <option value="4" selected>4 Minutes</option>
+        <option value="5">5 Minutes</option>
+    </select>
+
+    <h2>🎚️ DJ Effects & Mixer</h2>
+
+    <div class="effect">
+        <label for="bass">Bass</label>
+        <input id="bass" type="range" min="0" max="100" value="50">
+    </div>
+
+    <div class="effect">
+        <label for="reverb">Reverb</label>
+        <input id="reverb" type="range" min="0" max="100" value="20">
+    </div>
+
+    <div class="effect">
+        <label for="echo">Echo</label>
+        <input id="echo" type="range" min="0" max="100" value="15">
+    </div>
+
+    <div class="effect">
+        <label for="vocals">Vocal Volume</label>
+        <input id="vocals" type="range" min="0" max="100" value="80">
+    </div>
+
+    <div class="effect">
+        <label for="instrumental">Instrumental Volume</label>
+        <input id="instrumental" type="range" min="0" max="100" value="80">
+    </div>
+
+    <button id="generate">🎵 Generate My Song</button>
+
+    <p id="message" class="note">
+        Song generation engine is not connected yet. This page is the interface only.
+    </p>
+
+    <button id="download" disabled>Download MP3 (Coming Soon)</button>
+
+</div>
+</main>
+
+<script>
+document.getElementById("generate").addEventListener("click", function() {
+    const lyrics = document.getElementById("lyrics").value.trim();
+    const message = document.getElementById("message");
+
+    if (!lyrics) {
+        message.textContent = "Please paste your own lyrics first.";
+        return;
+    }
+
+    message.textContent =
+        "Your lyrics and settings are ready. The AI music engine will be connected in a later step.";
+});
+</script>
+
+</body>
+</html>

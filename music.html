@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TUNEXA - Music</title>
+<style>
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    background: #100d1c;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+header {
+    padding: 22px;
+    text-align: center;
+    background: linear-gradient(120deg,#28104d,#7419a8);
+}
+.logo { font-size: 34px; font-weight: bold; letter-spacing: 5px; color: #e6b8ff; }
+nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 16px;
+    background: #1b1629;
+}
+nav a {
+    color: white;
+    text-decoration: none;
+    background: #38234f;
+    padding: 10px 17px;
+    border-radius: 22px;
+}
+main { width: 92%; max-width: 900px; margin: 25px auto; }
+h2 { color: #d9a5ff; }
+input {
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #67468b;
+    background: #1c172b;
+    color: white;
+    font-size: 16px;
+}
+.languages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 18px 0;
+}
+.languages button {
+    background: #38234f;
+    color: white;
+    border: 1px solid #67468b;
+    padding: 11px 17px;
+    border-radius: 22px;
+    cursor: pointer;
+}
+.languages button.active { background: #963cce; }
+.song {
+    background: #211a31;
+    border: 1px solid #493064;
+    padding: 18px;
+    border-radius: 13px;
+    margin: 12px 0;
+}
+.song p { color: #c8bad9; }
+audio { width: 100%; margin-top: 8px; }
+.note { color: #bdb0ce; }
+</style>
+</head>
+<body>
+
+<header>
+    <div class="logo">TUNEXA</div>
+    <p>Explore Your Music Universe</p>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="music.html">Music</a>
+    <a href="studio.html">AI Song Studio</a>
+</nav>
+
+<main>
+    <h2>Find Your Music 🎵</h2>
+    <input id="search" type="search" placeholder="Search songs or artists...">
+
+    <h2>Choose Your Language</h2>
+    <div class="languages">
+        <button class="active" data-language="all">All</button>
+        <button data-language="Telugu">Telugu</button>
+        <button data-language="Tamil">Tamil</button>
+        <button data-language="Hindi">Hindi</button>
+        <button data-language="Malayalam">Malayalam</button>
+        <button data-language="Kannada">Kannada</button>
+        <button data-language="English">English</button>
+    </div>
+
+    <h2 id="categoryTitle">All Songs</h2>
+
+    <div id="songList">
+        <div class="song" data-language="English">
+            <h3>Final Level</h3>
+            <p>Artist: HoliznaCC0 | Language: English</p>
+            <audio controls>
+                <source src="songs/HoliznaCC0 - Final Level.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+    </div>
+
+    <p class="note" id="emptyMessage" hidden>
+        No songs available in this language yet. More music coming soon!
+    </p>
+</main>
+
+<script>
+let selectedLanguage = "all";
+const buttons = document.querySelectorAll(".languages button");
+const songs = document.querySelectorAll(".song");
+const search = document.getElementById("search");
+
+function updateSongs() {
+    let visibleCount = 0;
+
+    songs.forEach(song => {
+        const languageMatches =
+            selectedLanguage === "all" ||
+            song.dataset.language === selectedLanguage;
+
+        const searchMatches =
+            song.textContent.toLowerCase().includes(search.value.toLowerCase());
+
+        const show = languageMatches && searchMatches;
+        song.style.display = show ? "block" : "none";
+
+        if (show) visibleCount++;
+    });
+
+    document.getElementById("emptyMessage").hidden = visibleCount > 0;
+    document.getElementById("categoryTitle").textContent =
+        selectedLanguage === "all" ? "All Songs" : selectedLanguage + " Songs";
+}
+
+buttons.forEach(button => {
+    button.addEventListener("click", () => {
+        buttons.forEach(item => item.classList.remove("active"));
+        button.classList.add("active");
+        selectedLanguage = button.dataset.language;
+        updateSongs();
+    });
+});
+
+search.addEventListener("input", updateSongs);
+</script>
+
+</body>
+</html>

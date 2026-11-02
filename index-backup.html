@@ -1,0 +1,609 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TUNEXA - Music Universe</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: #100d1c;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+button, input, select, textarea { font: inherit; }
+
+#intro {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle, #552080, #100d1c 75%);
+    animation: introOut 0.7s ease 1.5s forwards;
+    pointer-events: none;
+}
+
+#intro h1 {
+    font-size: 58px;
+    letter-spacing: 9px;
+    color: #e6b8ff;
+    text-shadow: 0 0 30px #c15bff;
+}
+
+#intro p { color: #e6b8ff; }
+
+@keyframes introOut {
+    to { opacity: 0; visibility: hidden; }
+}
+
+header {
+    padding: 18px 25px;
+    background: #191326;
+    border-bottom: 1px solid #38264c;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    color: #dfadff;
+}
+
+header span {
+    color: #aa99bc;
+    font-size: 13px;
+}
+
+.layout {
+    display: flex;
+    min-height: calc(100vh - 75px);
+    padding-bottom: 100px;
+}
+
+.sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    background: #171222;
+    padding: 25px 15px;
+    border-right: 1px solid #38264c;
+}
+
+.menu-title {
+    color: #8e7c9f;
+    font-size: 12px;
+    margin: 20px 10px 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.menu-button {
+    width: 100%;
+    padding: 13px;
+    margin: 4px 0;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: #cfc2dc;
+    text-align: left;
+    cursor: pointer;
+}
+
+.menu-button.active,
+.menu-button:hover {
+    background: #39234f;
+    color: white;
+}
+
+main {
+    flex: 1;
+    min-width: 0;
+    padding: 28px;
+    max-width: 1150px;
+}
+
+.view { display: none; }
+.view.active { display: block; }
+
+h1, h2 { color: #e0b3ff; }
+
+.welcome {
+    padding: 35px;
+    border-radius: 18px;
+    background: linear-gradient(120deg, #30144c, #70249a);
+    margin-bottom: 25px;
+}
+
+.welcome h1 { font-size: 32px; }
+
+.welcome p { color: #ead8f8; }
+
+.search {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #59406d;
+    border-radius: 12px;
+    background: #211a30;
+    color: white;
+    margin: 15px 0;
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin: 18px 0;
+}
+
+.chip {
+    padding: 10px 17px;
+    border: 1px solid #513667;
+    border-radius: 25px;
+    background: #251a35;
+    color: white;
+    cursor: pointer;
+}
+
+.chip.active { background: #873bc0; }
+
+.song-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 15px;
+}
+
+.song-card {
+    background: #211a30;
+    padding: 17px;
+    border: 1px solid #39294c;
+    border-radius: 13px;
+}
+
+.song-art {
+    height: 130px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #46205e, #9b39aa);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 42px;
+}
+
+.song-card p {
+    color: #b9a9c9;
+    font-size: 13px;
+}
+
+.song-card button {
+    width: 100%;
+    padding: 10px;
+    background: #8138bb;
+    color: white;
+    border: 0;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.panel {
+    background: #211a30;
+    border: 1px solid #493064;
+    border-radius: 15px;
+    padding: 22px;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin: 17px 0 8px;
+    color: #e6d8f5;
+    font-weight: bold;
+}
+
+textarea, select {
+    width: 100%;
+    padding: 13px;
+    background: #100d1c;
+    border: 1px solid #67468b;
+    border-radius: 9px;
+    color: white;
+}
+
+textarea {
+    min-height: 190px;
+    resize: vertical;
+}
+
+.primary-button {
+    padding: 13px 22px;
+    border: 0;
+    border-radius: 25px;
+    background: linear-gradient(90deg, #8b35d1, #d13cbb);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 18px;
+}
+
+.effect { margin: 20px 0; }
+
+.effect input { width: 100%; accent-color: #c15bff; }
+
+.muted {
+    color: #aa99bc;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.empty { color: #b9a9c9; }
+
+.player {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    min-height: 82px;
+    background: #21172f;
+    border-top: 1px solid #62417d;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.player-info { min-width: 110px; }
+.player-info small { color: #b9a9c9; }
+
+.player audio {
+    flex: 1;
+    min-width: 0;
+    height: 38px;
+}
+
+@media(max-width: 650px) {
+    header { flex-direction: column; }
+    .layout { display: block; }
+    .sidebar {
+        width: 100%;
+        display: flex;
+        overflow-x: auto;
+        padding: 10px;
+        border-right: 0;
+        border-bottom: 1px solid #38264c;
+    }
+    .menu-title { display: none; }
+    .menu-button {
+        width: auto;
+        white-space: nowrap;
+    }
+    main { padding: 17px; }
+    .welcome { padding: 23px; }
+    .player { gap: 9px; padding: 10px; }
+    .player-info { min-width: 80px; font-size: 12px; }
+}
+</style>
+</head>
+
+<body>
+
+<div id="intro">
+    <h1>TUNEXA</h1>
+    <p>A Universe of Music</p>
+</div>
+
+<header>
+    <div class="logo">TUNEXA</div>
+    <span>YOUR MUSIC. YOUR WORLD.</span>
+</header>
+
+<div class="layout">
+
+<aside class="sidebar">
+    <button class="menu-button active" data-view="home">⌂ Home</button>
+    <button class="menu-button" data-view="music">♫ Music Library</button>
+    <button class="menu-button" data-view="studio">🎙 AI Song Studio</button>
+</aside>
+
+<main>
+
+<!-- HOME -->
+<section id="home" class="view active">
+
+    <div class="welcome">
+        <h1>Welcome to TUNEXA 🎵</h1>
+        <p>Discover music. Explore languages. Create your own songs.</p>
+    </div>
+
+    <h2>Explore TUNEXA</h2>
+
+    <div class="song-grid">
+
+        <div class="song-card">
+            <div class="song-art">🎧</div>
+            <h3>Music Library</h3>
+            <p>Discover music in your favourite language.</p>
+            <button onclick="showView('music')">Explore Music</button>
+        </div>
+
+        <div class="song-card">
+            <div class="song-art">🎙️</div>
+            <h3>AI Song Studio</h3>
+            <p>Turn your own lyrics into a song.</p>
+            <button onclick="showView('studio')">Open Studio</button>
+        </div>
+
+    </div>
+
+    <h2>Now Playing</h2>
+    <div class="panel">
+        <p>Choose a song from the Music Library to start listening.</p>
+    </div>
+
+</section>
+
+<!-- MUSIC LIBRARY -->
+<section id="music" class="view">
+
+    <h1>Music Library 🎵</h1>
+    <p class="muted">Find music from different languages.</p>
+
+    <input class="search" id="search"
+           placeholder="Search songs or artists...">
+
+    <h2>Languages</h2>
+
+    <div class="chips" id="languages">
+        <button class="chip active" data-language="all">All</button>
+        <button class="chip" data-language="Telugu">Telugu</button>
+        <button class="chip" data-language="Hindi">Hindi</button>
+        <button class="chip" data-language="Tamil">Tamil</button>
+        <button class="chip" data-language="Malayalam">Malayalam</button>
+        <button class="chip" data-language="Kannada">Kannada</button>
+        <button class="chip" data-language="English">English</button>
+    </div>
+
+    <h2 id="categoryTitle">All Songs</h2>
+
+    <div class="song-grid" id="songList">
+
+        <div class="song-card" data-language="English">
+            <div class="song-art">🎼</div>
+            <h3>Final Level</h3>
+            <p>HoliznaCC0 · English</p>
+            <button onclick="playSong(
+                'Final Level',
+                'HoliznaCC0',
+                'songs/HoliznaCC0 - Final Level.mp3'
+            )">▶ Play Song</button>
+        </div>
+
+    </div>
+
+    <p class="empty" id="emptyMessage" hidden>
+        No songs available in this language yet. More music coming soon!
+    </p>
+
+</section>
+
+<!-- AI STUDIO -->
+<section id="studio" class="view">
+
+    <h1>AI Song Studio 🎙️</h1>
+    <p class="muted">
+        Create a song using your own lyrics and your favourite music style.
+    </p>
+
+    <div class="panel">
+
+        <label for="lyrics">Paste Your Own Lyrics</label>
+        <textarea id="lyrics"
+            placeholder="Paste your complete song lyrics here..."></textarea>
+
+        <label for="language">Song Language</label>
+        <select id="language">
+            <option>Telugu</option>
+            <option>Hindi</option>
+            <option>Tamil</option>
+            <option>Malayalam</option>
+            <option>Kannada</option>
+            <option>English</option>
+        </select>
+
+        <label for="voice">Singing Voice</label>
+        <select id="voice">
+            <option>Male Voice</option>
+            <option>Female Voice</option>
+        </select>
+
+        <label for="style">Music Style</label>
+        <select id="style">
+            <option>Melody</option>
+            <option>Romantic</option>
+            <option>Folk</option>
+            <option>Mass</option>
+            <option>Devotional</option>
+            <option>Pop</option>
+            <option>DJ</option>
+            <option>Sad</option>
+            <option>Classical</option>
+            <option>Hip Hop</option>
+            <option>Rock</option>
+        </select>
+
+        <label for="duration">Song Duration</label>
+        <select id="duration">
+            <option value="3">3 Minutes</option>
+            <option value="4" selected>4 Minutes</option>
+            <option value="5">5 Minutes</option>
+        </select>
+
+    </div>
+
+    <div class="panel">
+
+        <h2>DJ Effects & Mixer 🎚️</h2>
+
+        <div class="effect">
+            <label for="bass">Bass</label>
+            <input id="bass" type="range" min="0" max="100" value="50">
+        </div>
+
+        <div class="effect">
+            <label for="reverb">Reverb</label>
+            <input id="reverb" type="range" min="0" max="100" value="20">
+        </div>
+
+        <div class="effect">
+            <label for="echo">Echo</label>
+            <input id="echo" type="range" min="0" max="100" value="15">
+        </div>
+
+        <div class="effect">
+            <label for="vocals">Vocal Volume</label>
+            <input id="vocals" type="range" min="0" max="100" value="80">
+        </div>
+
+        <div class="effect">
+            <label for="instrumental">Instrumental Volume</label>
+            <input id="instrumental" type="range" min="0" max="100" value="80">
+        </div>
+
+        <button class="primary-button" id="generate">
+            🎵 Generate My Song
+        </button>
+
+        <p class="muted" id="message">
+            AI music generation is not connected yet. These controls are currently a design preview.
+        </p>
+
+        <button class="primary-button" disabled>
+            Download MP3 - Coming Soon
+        </button>
+
+    </div>
+
+</section>
+
+</main>
+</div>
+
+<!-- SHARED MUSIC PLAYER -->
+<div class="player">
+
+    <div class="player-info">
+        <strong id="playerTitle">TUNEXA Player</strong><br>
+        <small id="playerArtist">Select a song</small>
+    </div>
+
+    <audio id="audioPlayer" controls>
+        Your browser does not support audio.
+    </audio>
+
+</div>
+
+<script>
+function showView(viewName) {
+    document.querySelectorAll(".view").forEach(view => {
+        view.classList.remove("active");
+    });
+
+    document.getElementById(viewName).classList.add("active");
+
+    document.querySelectorAll(".menu-button").forEach(button => {
+        button.classList.toggle(
+            "active",
+            button.dataset.view === viewName
+        );
+    });
+
+    window.scrollTo(0, 0);
+}
+
+document.querySelectorAll(".menu-button").forEach(button => {
+    button.addEventListener("click", () => {
+        showView(button.dataset.view);
+    });
+});
+
+const search = document.getElementById("search");
+const languageButtons = document.querySelectorAll("#languages button");
+const songCards = document.querySelectorAll(".song-card[data-language]");
+let selectedLanguage = "all";
+
+function filterSongs() {
+    let visible = 0;
+
+    songCards.forEach(song => {
+        const languageMatch =
+            selectedLanguage === "all" ||
+            song.dataset.language === selectedLanguage;
+
+        const searchMatch =
+            song.textContent.toLowerCase().includes(
+                search.value.toLowerCase()
+            );
+
+        const show = languageMatch && searchMatch;
+        song.style.display = show ? "block" : "none";
+
+        if (show) visible++;
+    });
+
+    document.getElementById("emptyMessage").hidden = visible > 0;
+
+    document.getElementById("categoryTitle").textContent =
+        selectedLanguage === "all"
+        ? "All Songs"
+        : selectedLanguage + " Songs";
+}
+
+languageButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        languageButtons.forEach(item => item.classList.remove("active"));
+        button.classList.add("active");
+        selectedLanguage = button.dataset.language;
+        filterSongs();
+    });
+});
+
+search.addEventListener("input", filterSongs);
+
+function playSong(title, artist, file) {
+    const player = document.getElementById("audioPlayer");
+
+    player.src = file;
+    document.getElementById("playerTitle").textContent = title;
+    document.getElementById("playerArtist").textContent = artist;
+
+    player.play().catch(() => {
+        alert("Please press Play in the music player.");
+    });
+}
+
+document.getElementById("generate").addEventListener("click", () => {
+    const lyrics = document.getElementById("lyrics").value.trim();
+    const message = document.getElementById("message");
+
+    if (!lyrics) {
+        message.textContent = "Please paste your own lyrics first.";
+        return;
+    }
+
+    message.textContent =
+        "Your lyrics and settings are ready. The AI music engine still needs to be connected.";
+});
+</script>
+
+</body>
+</html>
